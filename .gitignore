@@ -1,0 +1,10 @@
+*.txt
+*.interp
+*.c
+
+*.tokens
+*Lexer.py
+*Parser.py
+*Visitor.py
+AdaToCListener.py
+__pycache__
