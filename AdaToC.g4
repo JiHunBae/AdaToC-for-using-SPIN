@@ -14,7 +14,7 @@ lib_decl    :   'with' ('Ada.' ID) (', Ada.' ID)* ';'
             |   'use' ('Ada.' ID) (', Ada.' ID)* ';'
             ;
 
-proc_param  :   (ID ':' ('in' | 'out') var_type ';'?)  ;
+proc_param  :   (ID ':' ('in' | 'out' | 'in' 'out') var_type ';'?)  ;
 
 func_params :   (ID (',' ID)* ':' var_type ';')+ ;
 
@@ -25,7 +25,21 @@ var_type    :   'INTEGER'
 
 compound_stmt   :   (var_decl | proc_decl | func_decl)* 'begin' stmt* ('declare'? (proc_decl | func_decl)* 'end;'?) stmt* 'end' ID ;
 
-stmt    :   expr_stmt   ;
+stmt    :   expr_stmt
+        |   if_start
+        |   end_if
+        |   for_start
+        |   end_for
+        |   exit_stmt
+        ;
+
+if_start    :   'if' expr 'then';
+end_if  :   'end' 'if' ';'    ;
+
+for_start   :   'for' ID 'in' 'reverse'? expr 'loop' ;
+end_for :   'end' 'loop' ';'  ;
+
+exit_stmt   :   'exit' 'when' expr ';'  ;
 
 expr_stmt   :   expr ';'    ;
 
@@ -42,6 +56,9 @@ expr    :   NUM
         |   expr '*' expr
         |   expr '/' expr
         |   expr '=' expr
+        |   expr '/=' expr
+        |   expr ',' expr
+        |   expr '(' expr ')'
         ;
 
 ID  :   [a-zA-Z][a-zA-Z0-9_!~]*  ;
